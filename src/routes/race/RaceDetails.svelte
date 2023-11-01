@@ -1,36 +1,54 @@
 <script lang="ts">
-	let showdesc = false;
+	let showdesc = true;
 	import IntroText from './IntroText.svelte';
 	import { fly } from 'svelte/transition';
 	import Traits from './Traits.svelte';
 	export let visible: boolean;
 	export let currentRace: string[];
+
+	var myHeaders = new Headers();
+	myHeaders.append('Accept', 'application/json');
+
+	var requestOptions = {
+		method: 'GET',
+		headers: myHeaders,
+		redirect: 'follow'
+	};
+
+	// fetch('https://www.dnd5eapi.co/api/races/tiefling', {
+	// 	method: 'GET',
+	// 	headers: myHeaders,
+	// 	redirect: 'follow'
+	// })
+	// 	.then((response) => response.text())
+	// 	.then((result) => console.log(result))
+	// 	.catch((error) => console.log('error', error));
 </script>
 
-<div class="visible" transition:fly={{ y: 200, duration: 200 }}>
-	<h1>{currentRace[0]}</h1>
+<div class="visible" class:descbg={showdesc} transition:fly={{ y: 200, duration: 200 }}>
+	<img class="descimg" src={currentRace[1]} alt="" />
+	<div class="header"><h1>{currentRace[0]}</h1></div>
 	<button
 		class="exit"
 		on:click={() => {
 			visible = false;
 		}}>X</button
 	>
-	<div class="detailtop">
-		<div class="detailchoose">
-			<button
-				class="chooserbutton"
-				on:click={() => {
-					showdesc = true;
-				}}>Description</button
-			>
-			<button
-				class="chooserbutton"
-				on:click={() => {
-					showdesc = false;
-				}}>Traits</button
-			>
-		</div>
-		<img class="descimg" src={currentRace[1]} alt="" />
+	<div class="detailchoose">
+		<button
+			class="chooserbutton"
+			class:showdesc
+			on:click={() => {
+				showdesc = true;
+			}}>Description</button
+		>
+		<button
+			class="chooserbutton traits"
+			class:showdesc={!showdesc}
+			on:click={() => {
+				showdesc = false;
+			}}>Traits</button
+		>
 	</div>
 	{#if showdesc}
 		<div class="detailintro">
@@ -51,24 +69,35 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-
+		background: var(--gradient, linear-gradient(180deg, #2c3146 0%, #595b67 50.17%, #191726 100%));
 		z-index: 40;
-		background: linear-gradient(180deg, #d0d0e4 0%, #688b9e 100%);
+	}
+	.descbg {
+		background: rgb(194, 194, 194);
 	}
 	h1 {
-		color: #14182d;
-		width: 60%;
+		color: white;
+		font-size: 32px;
 	}
 	.descimg {
-		width: 180px;
-		height: 250px;
+		width: 100%;
+		height: 210px;
+		opacity: 1;
+		object-fit: cover;
 		position: absolute;
 		top: 0;
 		right: 0;
-		opacity: 1;
-		object-fit: cover;
-		border-radius: 0px 0px 0px 10px;
-		mix-blend-mode: multiply;
+	}
+	.header {
+		margin-top: 170px;
+		display: flex;
+		flex-direction: column;
+		z-index: 100;
+		justify-content: start;
+		width: 100%;
+		height: 90px;
+		background: linear-gradient(0deg, #141414 55.26%, rgba(20, 20, 20, 0.45) 78.54%, rgba(20, 20, 20, 0) 97.42%);
+		box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
 	}
 	.exit {
 		position: absolute;
@@ -82,29 +111,30 @@
 		z-index: 50;
 		border: none;
 	}
-	.detailtop {
-		display: flex;
+	.showdesc {
+		background: rgba(20, 20, 20, 0.6) !important;
 	}
 	.detailchoose {
 		display: flex;
-		flex-direction: column;
-		gap: 25px;
-		width: 60%;
+		width: 100%;
 		justify-content: center;
 		place-items: center;
 	}
 	.detailintro {
 		color: #14182d;
-		margin: 20px 30px;
 	}
 	.chooserbutton {
 		border: none;
-		width: 150px;
-		height: 50px;
-		background-color: #6a6a83;
-		color: #cdf8fb;
-		font-size: 25px;
+		width: 50%;
+		height: 40px;
+		background-color: black;
+		color: white;
+		font-size: 20px;
 		font-family: 'Nova Slim', sans-serif;
-		border-radius: 3px;
+		box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
+		border-radius: 0px 0px 0px 10px;
+	}
+	.traits {
+		border-radius: 0px 0px 10px 0px;
 	}
 </style>

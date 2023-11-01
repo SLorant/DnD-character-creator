@@ -31,14 +31,14 @@
 	<div class="races">
 		{#each Object.entries(races) as [race, image]}
 			<div class="onerace">
-				<button class="choose" on:click={() => goToNext(race)}>{race}</button>
+				<button on:click={() => handleVisible(race)} class="choose">{race}</button>
 				<img src="/bard.jpg" alt="" />
-				<button on:click={() => handleVisible(race)} class="info" />
 			</div>
 		{/each}
 	</div>
 	{#if visible}
 		<RaceDetails bind:visible {currentRace} />
+		<button class="choose" on:click={() => goToNext(currentRace[0])}>{currentRace[0]}</button>
 	{/if}
 </div>
 
@@ -49,13 +49,15 @@
 	}
 	.races {
 		width: 100%;
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		place-items: center;
 		row-gap: 20px;
 	}
 	.onerace {
-		width: 100%;
-		height: 180px;
+		width: 350px;
+		height: 150px;
 		position: relative;
 		display: flex;
 		justify-content: center;
