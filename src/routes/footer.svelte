@@ -7,12 +7,12 @@
 	}
 </script>
 
-<footer>
+<!-- <footer>
 	<button on:click={showChar}>asd</button>
 	{#if visible}
 		<CharacterDetails bind:visible />
 	{/if}
-</footer>
+</footer> -->
 
 <style>
 	footer {

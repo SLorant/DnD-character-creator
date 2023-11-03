@@ -1,5 +1,4 @@
 <script lang="ts">
-	let showdesc = true;
 	import IntroText from './IntroText.svelte';
 	import { fly } from 'svelte/transition';
 	import Traits from './Traits.svelte';
@@ -25,7 +24,7 @@
 	// 	.catch((error) => console.log('error', error));
 </script>
 
-<div class="visible" class:descbg={showdesc} transition:fly={{ y: 200, duration: 200 }}>
+<div class="visible" transition:fly={{ y: 200, duration: 200 }}>
 	<img class="descimg" src={currentRace[1]} alt="" />
 	<div class="header"><h1>{currentRace[0]}</h1></div>
 	<button
@@ -34,31 +33,16 @@
 			visible = false;
 		}}>X</button
 	>
-	<div class="detailchoose">
-		<button
-			class="chooserbutton"
-			class:showdesc
-			on:click={() => {
-				showdesc = true;
-			}}>Description</button
-		>
-		<button
-			class="chooserbutton traits"
-			class:showdesc={!showdesc}
-			on:click={() => {
-				showdesc = false;
-			}}>Traits</button
-		>
+	<div class="traitheader">
+		<div class="traits">Traits</div>
 	</div>
-	{#if showdesc}
-		<div class="detailintro">
-			<IntroText />
-		</div>
-	{:else}
-		<div class="detailintro">
-			<Traits race={currentRace[0]} />
-		</div>
-	{/if}
+	<div class="detailintro">
+		<Traits race={currentRace[0]} />
+	</div>
+	<div class="chooser">
+		<button>Cancel</button>
+		<button class="chooserace"><a href="/class">Choose race</a></button>
+	</div>
 </div>
 
 <style>
@@ -72,12 +56,32 @@
 		background: var(--gradient, linear-gradient(180deg, #2c3146 0%, #595b67 50.17%, #191726 100%));
 		z-index: 40;
 	}
-	.descbg {
-		background: rgb(194, 194, 194);
-	}
+
 	h1 {
 		color: white;
 		font-size: 32px;
+	}
+	button {
+		cursor: pointer;
+		width: 50%;
+		font-size: 25px;
+		border-radius: none;
+		border: none;
+		background: rgba(255, 255, 255, 0.7);
+	}
+	a {
+		color: black;
+		font-weight: normal;
+		-webkit-text-stroke-width: 0px;
+	}
+	.chooserace {
+		border-left: 2px solid black;
+		background-color: #7aca8b;
+	}
+	.chooser {
+		display: flex;
+		width: 100%;
+		height: 50px;
 	}
 	.descimg {
 		width: 100%;
@@ -111,10 +115,8 @@
 		z-index: 50;
 		border: none;
 	}
-	.showdesc {
-		background: rgba(20, 20, 20, 0.6) !important;
-	}
-	.detailchoose {
+
+	.traitheader {
 		display: flex;
 		width: 100%;
 		justify-content: center;
@@ -123,18 +125,18 @@
 	.detailintro {
 		color: #14182d;
 	}
-	.chooserbutton {
+	.traits {
 		border: none;
-		width: 50%;
+		width: 100%;
 		height: 40px;
-		background-color: black;
+		background-color: rgba(20, 20, 20, 0.6);
 		color: white;
 		font-size: 20px;
 		font-family: 'Nova Slim', sans-serif;
 		box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.25);
-		border-radius: 0px 0px 0px 10px;
-	}
-	.traits {
-		border-radius: 0px 0px 10px 0px;
+		border-radius: 0px 0px 10px 10px;
+		display: flex;
+		justify-content: center;
+		place-items: center;
 	}
 </style>

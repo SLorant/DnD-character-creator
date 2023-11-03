@@ -3,12 +3,12 @@
 	import IntroText from './IntroText.svelte';
 	import RaceDetails from './RaceDetails.svelte';
 	import { goto } from '$app/navigation';
-	let races = {
-		aasimar: 'aasimar.jpg',
-		human: 'human.jpg',
-		elf: 'elf.jpg',
-		dwarf: 'dwarf.jpg'
-	};
+	import { onMount } from 'svelte';
+	interface races {
+		[name: string]: string;
+	}
+	let races: races = {};
+	let loading = true;
 	let visible = false;
 	let currentRace = ['human', 'human.jpg'];
 	function handleVisible(race: string) {
@@ -23,19 +23,54 @@
 			goto('/race/subrace');
 		}
 	}
+
+	async function fetchData() {
+		try {
+			const response = await fetch(`https://www.dnd5eapi.co/api/races`, {
+				method: 'GET',
+				headers: {
+					Accept: 'application/json',
+					'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE'
+				}
+			});
+			if (response.ok) {
+				const responseData = await response.json();
+				console.log(responseData);
+				responseData.results.forEach((race: any) => {
+					races[race.index] = race.index + '.jpg';
+				});
+				loading = false;
+				// Continue fetching trait descriptions here, if needed
+			} else {
+				console.error('Failed to fetch race data');
+			}
+		} catch (error) {
+			console.error('Error while fetching race data: ' + error);
+		}
+	}
+
+	// Fetch data when the component is created
+	onMount(() => {
+		fetchData();
+	});
 </script>
 
-<div class="main">
+<div class="main" class:main2={visible}>
 	<div class="progressbar" />
 	<h1>Choose your race</h1>
-	<div class="races">
-		{#each Object.entries(races) as [race, image]}
-			<div class="onerace">
-				<button on:click={() => handleVisible(race)} class="choose">{race}</button>
-				<img src="/bard.jpg" alt="" />
-			</div>
-		{/each}
-	</div>
+	{#if !loading && !visible}
+		<div class="races">
+			{#each Object.entries(races) as [race, image]}
+				<div class="onerace">
+					<button on:click={() => handleVisible(race)} class="choose">{race}</button>
+					<img src="/bard.jpg" alt="" />
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<div class="loading">Loading...</div>
+	{/if}
+
 	{#if visible}
 		<RaceDetails bind:visible {currentRace} />
 		<button class="choose" on:click={() => goToNext(currentRace[0])}>{currentRace[0]}</button>
@@ -46,6 +81,13 @@
 	.main {
 		justify-content: start;
 		place-items: start;
+		height: 100%;
+	}
+	.main2 {
+		height: 100vh;
+	}
+	.loading {
+		height: 100vh;
 	}
 	.races {
 		width: 100%;
@@ -53,29 +95,16 @@
 		flex-direction: column;
 		justify-content: center;
 		place-items: center;
-		row-gap: 20px;
+		row-gap: 30px;
+		margin-bottom: 30px;
 	}
 	.onerace {
-		width: 350px;
+		width: calc(100% - 60px);
 		height: 150px;
 		position: relative;
 		display: flex;
 		justify-content: center;
 		place-items: center;
-	}
-	.info {
-		position: absolute;
-		bottom: 0px;
-		right: 20px;
-		width: 40%;
-		border-radius: 20px 0px;
-		height: 25%;
-		background-color: #221856;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		z-index: 30;
-		border: none;
 	}
 	.choose {
 		color: #cdf8fb;
@@ -95,11 +124,11 @@
 		height: 100%;
 	}
 	img {
-		width: 80%;
+		width: 100%;
 		height: 100%;
 		position: absolute;
 		top: 0;
-		left: 20px;
+		left: 0px;
 		border-radius: 20px;
 		object-fit: cover;
 		opacity: 0.4;

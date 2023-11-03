@@ -9,7 +9,7 @@
 <style>
 	:global(.main) {
 		font-family: 'Nova Slim', sans-serif;
-		height: calc(100vh - 60px);
+		height: 100vh;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
