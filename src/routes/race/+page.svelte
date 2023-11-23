@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
-	import IntroText from './IntroText.svelte';
+	import { openDB } from './indexedDB';
 	import RaceDetails from './RaceDetails.svelte';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -17,12 +17,11 @@
 		const searchRaceImage = Object.values(races).find((key) => key === race + '.jpg') ?? 'human.jpg';
 		currentRace = [searchRace, searchRaceImage];
 	}
-	function goToNext(race: string) {
-		localStorage.setItem('race', race);
-		if (race === 'human') {
-			goto('/race/subrace');
-		}
-	}
+	let db: IDBDatabase;
+
+	onMount(() => {
+		fetchData();
+	});
 
 	async function fetchData() {
 		try {
@@ -50,9 +49,6 @@
 	}
 
 	// Fetch data when the component is created
-	onMount(() => {
-		fetchData();
-	});
 </script>
 
 <div class="main" class:main2={visible}>
@@ -73,7 +69,7 @@
 
 	{#if visible}
 		<RaceDetails bind:visible {currentRace} />
-		<button class="choose" on:click={() => goToNext(currentRace[0])}>{currentRace[0]}</button>
+		<button class="choose">{currentRace[0]}</button>
 	{/if}
 </div>
 

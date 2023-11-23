@@ -7,7 +7,7 @@
 	<h2>create your own DnD character easier than before.</h2>
 	<div class="boxes">
 		<div class="cat">
-			<a href="/race">Start creating</a>
+			<a href="/name">Start creating</a>
 			<img src="/elf.jpg" alt="create" />
 		</div>
 		<div class="cat">

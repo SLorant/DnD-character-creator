@@ -2,26 +2,77 @@
 	import IntroText from './IntroText.svelte';
 	import { fly } from 'svelte/transition';
 	import Traits from './Traits.svelte';
+	import { onMount } from 'svelte';
 	export let visible: boolean;
 	export let currentRace: string[];
+	import { initializeIndexedDB, addToIndexedDB } from '../indexedDBUtil';
 
-	var myHeaders = new Headers();
-	myHeaders.append('Accept', 'application/json');
+	let db: any;
 
-	var requestOptions = {
-		method: 'GET',
-		headers: myHeaders,
-		redirect: 'follow'
-	};
+	onMount(async () => {
+		try {
+			db = await initializeIndexedDB();
+			console.log('IndexedDB initialized');
+		} catch (error) {
+			console.error('Error initializing IndexedDB', error);
+		}
+	});
 
-	// fetch('https://www.dnd5eapi.co/api/races/tiefling', {
-	// 	method: 'GET',
-	// 	headers: myHeaders,
-	// 	redirect: 'follow'
-	// })
-	// 	.then((response) => response.text())
-	// 	.then((result) => console.log(result))
-	// 	.catch((error) => console.log('error', error));
+	async function goToNext(username: string, race: string) {
+		console.log(db);
+		try {
+			const result = await addToIndexedDB(db, race);
+			console.log(result);
+			// Redirect or perform other actions here
+		} catch (error) {
+			console.error(error);
+		}
+	}
+	// let db: IDBDatabase;
+	// var myHeaders = new Headers();
+	// myHeaders.append('Accept', 'application/json');
+	// onMount(() => {
+	// 	const dbName = 'DnDCharacterDB';
+	// 	const dbVersion = 1;
+
+	// 	const request: IDBOpenDBRequest = indexedDB.open(dbName, dbVersion);
+	// 	request.onsuccess = (event: any) => {
+	// 		db = event.target.result;
+	// 	};
+	// 	request.onupgradeneeded = function (event: IDBVersionChangeEvent) {
+	// 		db = (event.target as IDBOpenDBRequest).result;
+
+	// 		if (!db.objectStoreNames.contains('characters')) {
+	// 			db.createObjectStore('characters', { keyPath: 'username' });
+	// 		}
+	// 	};
+	// 	return db
+	// });
+
+	// function goToNext(username: string, race: string) {
+	// 	if (db) {
+	// 		const transaction = db.transaction(['characters'], 'readwrite');
+
+	// 		const store = transaction.objectStore('characters');
+
+	// 		const character = {
+	// 			username: username, // Use the user's username as the key
+	// 			race: race
+	// 			// Add other character properties as needed
+	// 		};
+
+	// 		const request = store.add(character);
+
+	// 		request.onsuccess = function () {
+	// 			console.log('Character data added to IndexedDB');
+	// 			//goto('/race/subrace');
+	// 		};
+
+	// 		request.onerror = function (e) {
+	// 			console.error('Error adding character data to IndexedDB', e);
+	// 		};
+	// 	}
+	// }
 </script>
 
 <div class="visible" transition:fly={{ y: 200, duration: 200 }}>
@@ -41,7 +92,7 @@
 	</div>
 	<div class="chooser">
 		<button>Cancel</button>
-		<button class="chooserace"><a href="/class">Choose race</a></button>
+		<button class="chooserace" on:click={() => goToNext('asd1', currentRace[0])}>Choose race</button>
 	</div>
 </div>
 

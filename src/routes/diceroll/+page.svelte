@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { rollDice } from './dice.js';
+	import { rollDice } from './dice';
 	let result = 1;
 
 	function roll() {
