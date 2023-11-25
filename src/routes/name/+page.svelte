@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { initializeIndexedDB, addToIndexedDB, addToIndexedDBFirst } from '../indexedDBUtil';
-
+	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 	let db: any;
 	let name = '';
 
@@ -21,6 +22,8 @@
 
 			const result = await addToIndexedDBFirst(db, name);
 			console.log(result);
+			goto('/race');
+
 			// Redirect or perform other actions here
 		} catch (error) {
 			console.error(error);

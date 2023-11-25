@@ -42,7 +42,7 @@ export function addToIndexedDBFirst(db: IDBDatabase, name: string) {
 	});
 }
 
-export function addToIndexedDB(db: IDBDatabase, race: string) {
+export function addToIndexedDB(db: IDBDatabase, attr: string, type: string) {
 	return new Promise((resolve, reject) => {
 		if (db) {
 			const transaction = db.transaction(['characters'], 'readwrite');
@@ -53,7 +53,7 @@ export function addToIndexedDB(db: IDBDatabase, race: string) {
 				const existingRecord = getR.result;
 				if (existingRecord) {
 					// Update the existing record with the new race
-					existingRecord.race = race;
+					existingRecord[type] = attr;
 					const updateRequest = store.put(existingRecord);
 					updateRequest.onsuccess = function () {
 						resolve('Character data updated in IndexedDB');
@@ -63,20 +63,35 @@ export function addToIndexedDB(db: IDBDatabase, race: string) {
 					};
 				}
 			};
-			// const character = {
-			// 	username: 'vela',
-			// 	race: race
-			// 	// Add other character properties as needed
-			// };
-			// console.log(character);
-			// const request = store.add(character);
-
-			// request.onsuccess = function () {
-			// 	resolve('Character data added to IndexedDB');
-			// };
 
 			getR.onerror = function () {
 				reject('Error adding character data to IndexedDB');
+			};
+		} else {
+			reject('Database not initialized.');
+		}
+	});
+}
+
+export function getRaceFromIndexedDB(db: IDBDatabase) {
+	return new Promise((resolve, reject) => {
+		if (db) {
+			const transaction = db.transaction(['characters'], 'readonly');
+			const store = transaction.objectStore('characters');
+			const getRequest = store.get(localStorage.getItem('name') || '');
+
+			getRequest.onsuccess = function () {
+				const characterData = getRequest.result;
+				if (characterData) {
+					const race: string = characterData.race;
+					resolve(race);
+				} else {
+					reject('Character not found in IndexedDB');
+				}
+			};
+
+			getRequest.onerror = function () {
+				reject('Error fetching character data from IndexedDB');
 			};
 		} else {
 			reject('Database not initialized.');

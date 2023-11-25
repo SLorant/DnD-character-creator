@@ -1,10 +1,9 @@
 <script lang="ts">
-	import IntroText from './IntroText.svelte';
 	import { fly } from 'svelte/transition';
-	import Traits from './Traits.svelte';
+	import Features from './Features.svelte';
 	import { onMount } from 'svelte';
 	export let visible: boolean;
-	export let currentRace: string[];
+	export let currentClass: string[];
 	import { initializeIndexedDB, addToIndexedDB } from '../indexedDBUtil';
 	import { goto } from '$app/navigation';
 
@@ -19,22 +18,23 @@
 		}
 	});
 
-	async function goToNext(race: string) {
+	async function goToNext(charclass: string) {
 		console.log(db);
 		try {
-			const result = await addToIndexedDB(db, race, 'race');
+			const result = await addToIndexedDB(db, charclass, 'class');
 			console.log(result);
-			goto('/class');
+			goto('/attributes');
 			// Redirect or perform other actions here
 		} catch (error) {
 			console.error(error);
 		}
 	}
+	console.log(currentClass);
 </script>
 
 <div class="visible" transition:fly={{ y: 200, duration: 200 }}>
-	<img class="descimg" src={currentRace[1]} alt="" />
-	<div class="header"><h1>{currentRace[0]}</h1></div>
+	<img class="descimg" src={currentClass[1]} alt="" />
+	<div class="header"><h1>{currentClass[0]}</h1></div>
 	<button
 		class="exit"
 		on:click={() => {
@@ -42,10 +42,10 @@
 		}}>X</button
 	>
 	<div class="traitheader">
-		<div class="traits">Traits</div>
+		<div class="features">Features</div>
 	</div>
 	<div class="detailintro">
-		<Traits race={currentRace[0]} />
+		<Features charclass={currentClass[0]} />
 	</div>
 	<div class="chooser">
 		<button
@@ -53,7 +53,7 @@
 				visible = false;
 			}}>Cancel</button
 		>
-		<button class="chooserace" on:click={() => goToNext(currentRace[0])}>Choose race</button>
+		<button class="chooserace" on:click={() => goToNext(currentClass[0])}>Choose race</button>
 	</div>
 </div>
 
@@ -81,7 +81,11 @@
 		border: none;
 		background: rgba(255, 255, 255, 0.7);
 	}
-
+	a {
+		color: black;
+		font-weight: normal;
+		-webkit-text-stroke-width: 0px;
+	}
 	.chooserace {
 		border-left: 2px solid black;
 		background-color: #7aca8b;
@@ -132,8 +136,9 @@
 	}
 	.detailintro {
 		color: #14182d;
+		min-height: 62vh;
 	}
-	.traits {
+	.features {
 		border: none;
 		width: 100%;
 		height: 40px;

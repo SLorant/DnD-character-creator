@@ -29,6 +29,7 @@
 			if (response.ok) {
 				const responseData = await response.json();
 				raceData = responseData;
+				console.log(raceData);
 				traitUrls = raceData.traits.map((trait) => trait.url); // Moved traitUrls assignment here
 				loading = false;
 				// Continue fetching trait descriptions here, if needed
@@ -72,6 +73,8 @@
 				featureDescriptions = { ...raceData };
 
 				delete featureDescriptions.index;
+				delete featureDescriptions.ability_bonuses;
+				delete featureDescriptions.ability_bonus_options;
 				delete featureDescriptions.url;
 				delete featureDescriptions.traits;
 				delete featureDescriptions.languages;
