@@ -53,7 +53,7 @@
 				visible = false;
 			}}>Cancel</button
 		>
-		<button class="chooserace" on:click={() => goToNext(currentClass[0])}>Choose race</button>
+		<button class="chooserace" on:click={() => goToNext(currentClass[0])}>Choose class</button>
 	</div>
 </div>
 
@@ -151,5 +151,13 @@
 		display: flex;
 		justify-content: center;
 		place-items: center;
+	}
+	@media (min-width: 900px) {
+		.visible {
+			width: 900px;
+			top: 0px;
+			right: 0px;
+			position: relative;
+		}
 	}
 </style>

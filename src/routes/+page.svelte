@@ -14,10 +14,6 @@
 			<a href="/create">Other tools</a>
 			<img src="/dice.webp" alt="tools" />
 		</div>
-		<div class="cat">
-			<a href="/create">Other tools</a>
-			<img src="/dice.webp" alt="tools" />
-		</div>
 	</div>
 </div>
 
@@ -35,6 +31,7 @@
 		justify-content: space-around;
 		place-items: center;
 		gap: 20px;
+		margin-bottom: 100px;
 	}
 	.cat {
 		width: 90%;
@@ -82,5 +79,16 @@
 	a {
 		width: 100%;
 		height: 100%;
+	}
+
+	@media (min-width: 600px) {
+		.cat {
+			width: 600px;
+			height: 200px;
+		}
+		.boxes {
+			gap: 40px;
+			margin-bottom: 100px;
+		}
 	}
 </style>

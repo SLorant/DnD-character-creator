@@ -80,4 +80,9 @@
 		place-items: center;
 		flex-direction: column;
 	}
+	@media (min-width: 600px) {
+		.inside {
+			width: 600px;
+		}
+	}
 </style>

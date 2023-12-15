@@ -63,14 +63,15 @@
 				</div>
 			{/each}
 		</div>
-	{:else}
+	{:else if loading && !visible}
 		<div class="loading">Loading...</div>
 	{/if}
 
-	{#if visible}
-		<RaceDetails bind:visible {currentRace} />
-		<button class="choose">{currentRace[0]}</button>
-	{/if}
+	<div class="detailcontainer">
+		{#if visible}
+			<RaceDetails bind:visible {currentRace} />
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -78,12 +79,21 @@
 		justify-content: start;
 		place-items: start;
 		height: 100%;
+		background: var(--gradient, linear-gradient(180deg, #2c3146 0%, #595b67 50.17%, #191726 100%));
+		overflow-x: hidden;
 	}
 	.main2 {
 		height: 100vh;
 	}
 	.loading {
 		height: 100vh;
+	}
+	.detailcontainer {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		place-items: center;
+		overflow-x: hidden;
 	}
 	.races {
 		width: 100%;
@@ -130,9 +140,26 @@
 		opacity: 0.4;
 	}
 
-	a {
-		width: 80%;
-		height: 100%;
-		font-size: 40px;
+	@media (min-width: 900px) {
+		h1 {
+			font-size: 40px;
+		}
+		.onerace {
+			width: 400px;
+		}
+		.races {
+			display: grid;
+			grid-template-columns: 400px 400px;
+			column-gap: 60px;
+			margin-bottom: 80px;
+		}
+		.detailcontainer {
+			position: absolute;
+			width: 100vw;
+			top: 0px;
+			left: 0px;
+			background: var(--gradient, linear-gradient(180deg, #2c3146 0%, #595b67 50.17%, #191726 100%));
+			overflow-x: hidden;
+		}
 	}
 </style>

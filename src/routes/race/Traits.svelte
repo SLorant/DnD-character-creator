@@ -222,4 +222,19 @@
 		display: flex;
 		justify-content: center;
 	}
+	@media (min-width: 600px) {
+		.trait {
+			width: 500px;
+		}
+	}
+	@media (min-width: 900px) {
+		.trait {
+			width: 400px;
+		}
+		.traitlist {
+			display: grid;
+			grid-template-columns: 400px 400px;
+			min-height: 54vh;
+		}
+	}
 </style>

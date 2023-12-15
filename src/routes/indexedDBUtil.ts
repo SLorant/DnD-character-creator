@@ -41,8 +41,15 @@ export function addToIndexedDBFirst(db: IDBDatabase, name: string) {
 		}
 	});
 }
-
-export function addToIndexedDB(db: IDBDatabase, attr: string, type: string) {
+type Attributes = {
+	Strength: number;
+	Dexterity: number;
+	Constitution: number;
+	Intelligence: number;
+	Wisdom: number;
+	Charisma: number;
+};
+export function addToIndexedDB(db: IDBDatabase, attr: string | Attributes, type: string) {
 	return new Promise((resolve, reject) => {
 		if (db) {
 			const transaction = db.transaction(['characters'], 'readwrite');
@@ -73,7 +80,7 @@ export function addToIndexedDB(db: IDBDatabase, attr: string, type: string) {
 	});
 }
 
-export function getRaceFromIndexedDB(db: IDBDatabase) {
+export function getCharacterDataFromIndexedDB(type: string, db: IDBDatabase) {
 	return new Promise((resolve, reject) => {
 		if (db) {
 			const transaction = db.transaction(['characters'], 'readonly');
@@ -83,8 +90,19 @@ export function getRaceFromIndexedDB(db: IDBDatabase) {
 			getRequest.onsuccess = function () {
 				const characterData = getRequest.result;
 				if (characterData) {
-					const race: string = characterData.race;
-					resolve(race);
+					if (type === 'race') {
+						const race: string = characterData.race;
+						resolve(race);
+					} else if (type === 'class') {
+						const charclass: string = characterData.class;
+						resolve(charclass);
+					} else if (type === 'name') {
+						const name: string = characterData.name;
+						resolve(name);
+					} else {
+						const attributes: string = characterData.attributes;
+						resolve(attributes);
+					}
 				} else {
 					reject('Character not found in IndexedDB');
 				}

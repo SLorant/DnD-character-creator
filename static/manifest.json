@@ -1,0 +1,11 @@
+{
+	"name": "DnD character maker",
+	"short_name": "CharMaker",
+	"start_url": "/",
+	"icons": [],
+	"scope": "/",
+	"theme_color": "#000000",
+	"background_color": "#FFFFFF",
+	"display": "standalone",
+	"description": "this is a character maker"
+}

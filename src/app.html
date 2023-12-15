@@ -7,6 +7,7 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link href="https://fonts.googleapis.com/css2?family=Nova+Slim&display=swap" rel="stylesheet" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="manifest" crossorigin="use-credentials" href="manifest.json" />
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
@@ -19,6 +20,7 @@
 			padding: 0;
 			font-family: sans-serif;
 			background: var(--gradient, linear-gradient(180deg, #2c3146 0%, #595b67 50.17%, #191726 100%));
+			overflow-x: hidden;
 		}
 	</style>
 </html>

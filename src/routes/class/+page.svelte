@@ -62,14 +62,14 @@
 				</div>
 			{/each}
 		</div>
-	{:else}
+	{:else if loading && !visible}
 		<div class="loading">Loading...</div>
 	{/if}
-
-	{#if visible}
-		<ClassDetails bind:visible {currentClass} />
-		<button class="choose">{currentClass[0]}</button>
-	{/if}
+	<div class="detailcontainer">
+		{#if visible}
+			<ClassDetails bind:visible {currentClass} />
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -128,10 +128,33 @@
 		object-fit: cover;
 		opacity: 0.4;
 	}
-
-	a {
-		width: 80%;
-		height: 100%;
-		font-size: 40px;
+	.detailcontainer {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		place-items: center;
+		overflow-x: hidden !important;
+	}
+	@media (min-width: 900px) {
+		h1 {
+			font-size: 40px;
+		}
+		.onecharclass {
+			width: 400px;
+		}
+		.classes {
+			display: grid;
+			grid-template-columns: 400px 400px;
+			column-gap: 60px;
+			margin-bottom: 80px;
+		}
+		.detailcontainer {
+			position: absolute;
+			width: 98vw;
+			top: 0px;
+			left: 0px;
+			background: var(--gradient, linear-gradient(180deg, #2c3146 0%, #595b67 50.17%, #191726 100%));
+			overflow-x: hidden;
+		}
 	}
 </style>
