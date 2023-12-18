@@ -20,7 +20,6 @@
 			localStorage.setItem('name', name);
 
 			const result = await addToIndexedDBFirst(db, name);
-			console.log(result);
 			goto('/race');
 		} catch (error) {
 			console.error(error);

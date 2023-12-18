@@ -19,10 +19,8 @@
 	});
 
 	async function goToNext(race: string) {
-		console.log(db);
 		try {
 			const result = await addToIndexedDB(db, race, 'race');
-			console.log(result);
 			goto('/class');
 		} catch (error) {
 			console.error(error);

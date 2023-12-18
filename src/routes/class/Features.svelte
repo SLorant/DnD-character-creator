@@ -17,6 +17,7 @@
 	let classData: apiData;
 	let traitUrls: any;
 	let loading = true;
+	let errorExists = false;
 	async function fetchData() {
 		try {
 			const response = await fetch(`https://www.dnd5eapi.co/api/classes/${charclass}`, {
@@ -27,15 +28,16 @@
 				}
 			});
 			if (response.ok) {
+				errorExists = false;
 				const responseData = await response.json();
 				classData = responseData;
-				console.log(classData);
 				loading = false;
 			} else {
 				console.error('Failed to fetch race data');
 			}
 		} catch (error) {
 			console.error('Error while fetching race data: ' + error);
+			errorExists = true;
 		}
 	}
 
@@ -100,8 +102,6 @@
 					})['proficiencies'];
 					delete featureDescriptions.proficiencies;
 				}
-
-				console.log(featureDescriptions);
 			}
 		}
 		if (traitUrls && !done) {
@@ -130,7 +130,6 @@
 		} catch (error) {
 			console.error(`Error while fetching trait description: ${error}`);
 		}
-		if (classDetails) console.log(Object.keys(classDetails.proficiency_choices).length);
 	}
 </script>
 
@@ -184,6 +183,8 @@
 				</button>
 			{/each}
 		{/if}
+	{:else if errorExists}
+		<div class="loading">You are offline</div>
 	{:else}
 		<div class="loading">Loading...</div>
 	{/if}

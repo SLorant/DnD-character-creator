@@ -31,7 +31,6 @@
 			});
 			if (response.ok) {
 				const responseData = await response.json();
-				console.log(responseData);
 				responseData.results.forEach((race: any) => {
 					races[race.index] = race.index + '.jpg';
 				});

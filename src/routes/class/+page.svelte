@@ -32,7 +32,6 @@
 			});
 			if (response.ok) {
 				const responseData = await response.json();
-				console.log(responseData);
 				responseData.results.forEach((charclass: any) => {
 					classes[charclass.index] = charclass.index + '.jpg';
 				});

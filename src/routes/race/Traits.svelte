@@ -2,7 +2,7 @@
 	import type { apiData } from './traits';
 	let selectedTraits: string[] = [];
 	export let race: string;
-
+	let errorExists = false;
 	const traitStates: Record<string, boolean> = {};
 	function toggleDescription(trait: string) {
 		if (selectedTraits.includes(trait)) {
@@ -27,16 +27,18 @@
 				}
 			});
 			if (response.ok) {
+				errorExists = false;
 				const responseData = await response.json();
 				raceData = responseData;
-				console.log(raceData);
 				traitUrls = raceData.traits.map((trait) => trait.url);
 				loading = false;
 			} else {
 				console.error('Failed to fetch race data');
+				errorExists = true;
 			}
 		} catch (error) {
 			console.error('Error while fetching race data: ' + error);
+			errorExists = true;
 		}
 	}
 
@@ -88,7 +90,6 @@
 				];
 				delete Object.assign(featureDescriptions, { ['Alignment']: featureDescriptions['alignment'] })['alignment'];
 				if (featureDescriptions['starting_proficiencies']?.length > 0) {
-					console.log(featureDescriptions['starting_proficiencies']);
 					delete Object.assign(featureDescriptions, {
 						['Starting proficiencies']: featureDescriptions['starting_proficiencies']
 					})['starting_proficiencies'];
@@ -99,7 +100,6 @@
 				delete Object.assign(featureDescriptions, { ['Languages']: featureDescriptions['language_desc'] })[
 					'language_desc'
 				];
-				console.log(featureDescriptions['Starting proficiencies']);
 			}
 
 			traitUrls = raceData.traits.map((trait) => trait.url);
@@ -131,7 +131,6 @@
 		} catch (error) {
 			console.error(`Error while fetching trait description: ${error}`);
 		}
-		if (raceDetails) console.log(Object.keys(raceDetails.starting_proficiencies).length);
 	}
 </script>
 
@@ -166,6 +165,8 @@
 				{/if}
 			</button>
 		{/each}
+	{:else if errorExists}
+		<div class="loading">You are offline</div>
 	{:else}
 		<div class="loading">Loading...</div>
 	{/if}

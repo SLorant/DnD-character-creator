@@ -45,10 +45,8 @@
 	};
 
 	async function goToNext(attributes: Attributes) {
-		console.log(db);
 		try {
 			const result = await addToIndexedDB(db, attributes, 'attributes');
-			console.log(result);
 			goto('/summary');
 		} catch (error) {
 			console.error(error);
@@ -78,7 +76,6 @@
 			});
 			if (response.ok) {
 				const responseData = await response.json();
-				console.log(responseData);
 				bonuses = responseData.ability_bonuses;
 				return bonuses;
 			} else {
@@ -94,7 +91,6 @@
 			const bonusAttr = Object.keys(endattributes).find((attr) =>
 				attr.toLowerCase().startsWith(ability.ability_score.index)
 			);
-			console.log(bonusAttr);
 			if (bonusAttr) {
 				endattributes[bonusAttr as keyof Attributes] += ability.bonus;
 				info += ` you get +${ability.bonus} ability score to ${bonusAttr}.`;

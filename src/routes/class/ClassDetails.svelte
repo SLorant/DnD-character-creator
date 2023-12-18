@@ -19,16 +19,13 @@
 	});
 
 	async function goToNext(charclass: string) {
-		console.log(db);
 		try {
 			const result = await addToIndexedDB(db, charclass, 'class');
-			console.log(result);
 			goto('/attributes');
 		} catch (error) {
 			console.error(error);
 		}
 	}
-	console.log(currentClass);
 </script>
 
 <div class="visible" transition:fly={{ y: 200, duration: 200 }}>
