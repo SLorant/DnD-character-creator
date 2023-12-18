@@ -2,6 +2,7 @@
 	import { getCharacterDataFromIndexedDB, initializeIndexedDB, addToIndexedDB } from '../indexedDBUtil';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import BackArrow from '../BackArrow.svelte';
 	let db: any;
 	let race: any;
 	let bonuses: any;
@@ -49,7 +50,6 @@
 			const result = await addToIndexedDB(db, attributes, 'attributes');
 			console.log(result);
 			goto('/summary');
-			// Redirect or perform other actions here
 		} catch (error) {
 			console.error(error);
 		}
@@ -81,7 +81,6 @@
 				console.log(responseData);
 				bonuses = responseData.ability_bonuses;
 				return bonuses;
-				// Continue fetching trait descriptions here, if needed
 			} else {
 				console.error('Failed to fetch race data');
 			}
@@ -124,6 +123,10 @@
 	};
 </script>
 
+<head>
+	<title>Attributes</title>
+</head>
+
 <main class="main">
 	<h1>Point Buy Calculator</h1>
 
@@ -153,7 +156,7 @@
 		</div>
 	</div>
 	<div class="attributes">
-		<h1>With bonuses</h1>
+		<h1 class="with">With bonuses</h1>
 		<div class="bonuses">
 			{#each Object.entries(endattributes) as [attribute, score]}
 				<div class="attr">
@@ -165,6 +168,9 @@
 	<div class="chooser">
 		<button class="chooserace" on:click={() => goToNext(endattributes)}>See summary</button>
 	</div>
+	<div class="arrow">
+		<BackArrow where={'class'} />
+	</div>
 </main>
 
 <style>
@@ -172,9 +178,18 @@
 		justify-content: start;
 		min-height: 110vh;
 	}
-
+	.arrow {
+		position: absolute;
+		top: -20px;
+		left: 0px;
+	}
 	h1 {
-		margin: 30px 0px;
+		margin-bottom: 0px;
+		margin-top: 60px;
+	}
+	.with {
+		margin-top: 10px;
+		margin-bottom: 20px;
 	}
 	p {
 		font-size: 18px;

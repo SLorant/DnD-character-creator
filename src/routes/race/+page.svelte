@@ -1,9 +1,7 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
-	import { openDB } from './indexedDB';
 	import RaceDetails from './RaceDetails.svelte';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import BackArrow from '../BackArrow.svelte';
 	interface races {
 		[name: string]: string;
 	}
@@ -17,7 +15,6 @@
 		const searchRaceImage = Object.values(races).find((key) => key === race + '.jpg') ?? 'human.jpg';
 		currentRace = [searchRace, searchRaceImage];
 	}
-	let db: IDBDatabase;
 
 	onMount(() => {
 		fetchData();
@@ -39,7 +36,6 @@
 					races[race.index] = race.index + '.jpg';
 				});
 				loading = false;
-				// Continue fetching trait descriptions here, if needed
 			} else {
 				console.error('Failed to fetch race data');
 			}
@@ -47,19 +43,20 @@
 			console.error('Error while fetching race data: ' + error);
 		}
 	}
-
-	// Fetch data when the component is created
 </script>
 
+<head>
+	<title>Race</title>
+</head>
 <div class="main" class:main2={visible}>
-	<div class="progressbar" />
 	<h1>Choose your race</h1>
 	{#if !loading && !visible}
 		<div class="races">
+			<BackArrow where={'name'} />
 			{#each Object.entries(races) as [race, image]}
 				<div class="onerace">
 					<button on:click={() => handleVisible(race)} class="choose">{race}</button>
-					<img src="/bard.jpg" alt="" />
+					<img src="/arts/{image}" alt="" />
 				</div>
 			{/each}
 		</div>

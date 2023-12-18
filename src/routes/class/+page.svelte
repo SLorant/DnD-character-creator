@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition';
-	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import ClassDetails from './ClassDetails.svelte';
+	import BackArrow from '../BackArrow.svelte';
+
 	interface classes {
 		[name: string]: string;
 	}
@@ -16,7 +16,6 @@
 		const searchClassImage = Object.values(classes).find((key) => key === charclass + '.jpg') ?? 'human.jpg';
 		currentClass = [searchClass, searchClassImage];
 	}
-	let db: IDBDatabase;
 
 	onMount(() => {
 		fetchData();
@@ -38,7 +37,6 @@
 					classes[charclass.index] = charclass.index + '.jpg';
 				});
 				loading = false;
-				// Continue fetching trait descriptions here, if needed
 			} else {
 				console.error('Failed to fetch charclass data');
 			}
@@ -46,10 +44,11 @@
 			console.error('Error while fetching charclass data: ' + error);
 		}
 	}
-
-	// Fetch data when the component is created
 </script>
 
+<head>
+	<title>Class</title>
+</head>
 <div class="main" class:main2={visible}>
 	<div class="progressbar" />
 	<h1>Choose your class</h1>
@@ -58,7 +57,7 @@
 			{#each Object.entries(classes) as [charclass, image]}
 				<div class="onecharclass">
 					<button on:click={() => handleVisible(charclass)} class="choose">{charclass}</button>
-					<img src="/bard.jpg" alt="" />
+					<img src="/arts/{image}" alt="" />
 				</div>
 			{/each}
 		</div>
@@ -70,6 +69,7 @@
 			<ClassDetails bind:visible {currentClass} />
 		{/if}
 	</div>
+	<BackArrow where={'race'} />
 </div>
 
 <style>
@@ -80,6 +80,9 @@
 	}
 	.main2 {
 		height: 100vh;
+	}
+	h1 {
+		font-size: 30px;
 	}
 	.loading {
 		height: 100vh;

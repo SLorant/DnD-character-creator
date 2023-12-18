@@ -5,7 +5,7 @@
 	import { from, forkJoin, throwError } from 'rxjs';
 	import { switchMap, catchError } from 'rxjs/operators';
 	import { saveAs } from 'file-saver';
-	import type { an } from 'vitest/dist/types-198fd1d9';
+	import { goto } from '$app/navigation';
 
 	let db: any;
 	let race: any;
@@ -43,18 +43,6 @@
 					return from(PDFDocument.load(pdfBytes)).pipe(
 						switchMap((pdfDoc) => {
 							const form = pdfDoc.getForm();
-							// const fields = form.getFields();
-							// fields.forEach((field) => {
-							// 	const type = field.constructor.name;
-							// 	const name = field.getName();
-							// 	//console.log(`${type}: ${name}`);
-							// 	if (name.trim().toLowerCase() == 'dexmod') {
-							// 		console.log(name);
-							// 		let field2 = field as PDFTextField;
-							// 		field2.setText(race);
-							// 	}
-							// });
-							// console.log(attributes);
 							Object.entries(attributes).forEach((attr) => {
 								const attributeName = attr[0];
 								const attributeValue = attr[1] as number;
@@ -91,14 +79,45 @@
 	};
 </script>
 
+<head>
+	<title>Summary</title>
+</head>
 <div class="main">
 	<h1>Summary</h1>
-
+	<div>
+		<p>Name: {name}</p>
+		<p>Race: {race}</p>
+		<p>Class: {characterClass}</p>
+	</div>
 	<button on:click={exportToPDF}>Export to pdf!</button>
+	<button class="home" on:click={() => goto('/')}>Back to home</button>
 </div>
 
 <style>
+	.main {
+		justify-content: center;
+	}
 	p {
+		font-size: 20px;
 		color: white;
+	}
+	h1 {
+		font-size: 40px;
+	}
+	button {
+		cursor: pointer;
+		border-radius: 5px;
+		font-size: 25px;
+		border-radius: none;
+		border: 2px solid black;
+		background-color: #7aca8b;
+		width: 200px;
+		padding: 6px;
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+	.home {
+		margin-top: 0px;
+		background: rgba(255, 255, 255, 0.7);
 	}
 </style>

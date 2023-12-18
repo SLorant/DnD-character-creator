@@ -1,5 +1,3 @@
-// indexedDBUtils.js
-
 export function initializeIndexedDB() {
 	return new Promise((resolve, reject) => {
 		const dbName = 'DnDCharacterDB';
@@ -59,7 +57,6 @@ export function addToIndexedDB(db: IDBDatabase, attr: string | Attributes, type:
 				console.log(getR.result);
 				const existingRecord = getR.result;
 				if (existingRecord) {
-					// Update the existing record with the new race
 					existingRecord[type] = attr;
 					const updateRequest = store.put(existingRecord);
 					updateRequest.onsuccess = function () {

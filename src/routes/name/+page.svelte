@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { initializeIndexedDB, addToIndexedDB, addToIndexedDBFirst } from '../indexedDBUtil';
-	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
+	import BackArrow from '../BackArrow.svelte';
 	let db: any;
 	let name = '';
 
@@ -16,20 +16,21 @@
 	});
 
 	async function goToNext(name: string) {
-		console.log(db);
 		try {
 			localStorage.setItem('name', name);
 
 			const result = await addToIndexedDBFirst(db, name);
 			console.log(result);
 			goto('/race');
-
-			// Redirect or perform other actions here
 		} catch (error) {
 			console.error(error);
 		}
 	}
 </script>
+
+<head>
+	<title>Name</title>
+</head>
 
 <div class="main">
 	<div class="inside">
@@ -37,6 +38,9 @@
 		<div class="namediv">
 			<input type="text" bind:value={name} />
 			<button on:click={() => goToNext(name)}>continue</button>
+		</div>
+		<div class="arrow">
+			<BackArrow where={''} />
 		</div>
 	</div>
 </div>
@@ -59,6 +63,11 @@
 		gap: 40px;
 		margin-bottom: 50px;
 	}
+	.arrow {
+		position: absolute;
+		top: -20px;
+		left: 0px;
+	}
 	input {
 		font-size: 20px;
 		background-color: transparent;
@@ -79,6 +88,7 @@
 		justify-content: space-around;
 		place-items: center;
 		flex-direction: column;
+		position: relative;
 	}
 	@media (min-width: 600px) {
 		.inside {

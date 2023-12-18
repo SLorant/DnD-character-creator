@@ -30,9 +30,7 @@
 				const responseData = await response.json();
 				classData = responseData;
 				console.log(classData);
-				// Moved traitUrls assignment here
 				loading = false;
-				// Continue fetching trait descriptions here, if needed
 			} else {
 				console.error('Failed to fetch race data');
 			}
@@ -41,7 +39,6 @@
 		}
 	}
 
-	// Fetch data when the component is created
 	fetchData();
 
 	type Features = {
@@ -49,7 +46,7 @@
 	};
 
 	type FeatureDescriptions = {
-		[traitIndex: string]: any; // Replace string with the actual type of trait descriptions
+		[traitIndex: string]: any;
 	};
 
 	let traitDescriptions: FeatureDescriptions;
@@ -110,7 +107,6 @@
 		if (traitUrls && !done) {
 			Promise.all(traitUrls.map(fetchFeatureDescription))
 				.then(() => {
-					// Now, you have all trait descriptions in the traitDescriptions object
 					done = true;
 				})
 				.catch((error) => {
@@ -119,7 +115,6 @@
 		}
 	}
 
-	// Function to fetch trait descriptions
 	async function fetchFeatureDescription(url: string) {
 		url = 'https://www.dnd5eapi.co' + url;
 		try {
@@ -226,7 +221,7 @@
 		font-size: 15px;
 		padding-left: 20px;
 		padding-right: 20px;
-		padding-bottom: 10px;
+		padding-bottom: 0px;
 		text-align: justify;
 		font-family: sans-serif;
 	}

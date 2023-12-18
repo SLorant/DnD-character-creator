@@ -2,6 +2,9 @@
 	import { fade } from 'svelte/transition';
 </script>
 
+<head>
+	<title>DnD character maker</title>
+</head>
 <div class="main">
 	<img class="logo" src="/logo.svg" alt="" />
 	<h2>create your own DnD character easier than before.</h2>
@@ -11,7 +14,7 @@
 			<img src="/elf.jpg" alt="create" />
 		</div>
 		<div class="cat">
-			<a href="/create">Other tools</a>
+			<a href="/diceroll">Roll the dice!</a>
 			<img src="/dice.webp" alt="tools" />
 		</div>
 	</div>

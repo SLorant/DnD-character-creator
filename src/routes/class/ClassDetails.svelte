@@ -24,7 +24,6 @@
 			const result = await addToIndexedDB(db, charclass, 'class');
 			console.log(result);
 			goto('/attributes');
-			// Redirect or perform other actions here
 		} catch (error) {
 			console.error(error);
 		}
@@ -33,7 +32,7 @@
 </script>
 
 <div class="visible" transition:fly={{ y: 200, duration: 200 }}>
-	<img class="descimg" src={currentClass[1]} alt="" />
+	<img class="descimg" src="/arts/{currentClass[1]}" alt="" />
 	<div class="header"><h1>{currentClass[0]}</h1></div>
 	<button
 		class="exit"
@@ -81,11 +80,7 @@
 		border: none;
 		background: rgba(255, 255, 255, 0.7);
 	}
-	a {
-		color: black;
-		font-weight: normal;
-		-webkit-text-stroke-width: 0px;
-	}
+
 	.chooserace {
 		border-left: 2px solid black;
 		background-color: #7aca8b;

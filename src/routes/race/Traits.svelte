@@ -30,9 +30,8 @@
 				const responseData = await response.json();
 				raceData = responseData;
 				console.log(raceData);
-				traitUrls = raceData.traits.map((trait) => trait.url); // Moved traitUrls assignment here
+				traitUrls = raceData.traits.map((trait) => trait.url);
 				loading = false;
-				// Continue fetching trait descriptions here, if needed
 			} else {
 				console.error('Failed to fetch race data');
 			}
@@ -41,7 +40,6 @@
 		}
 	}
 
-	// Fetch data when the component is created
 	fetchData();
 
 	type Traits = {
@@ -49,7 +47,7 @@
 	};
 
 	type TraitDescriptions = {
-		[traitIndex: string]: any; // Replace string with the actual type of trait descriptions
+		[traitIndex: string]: any;
 	};
 
 	let traitDescriptions: TraitDescriptions;
@@ -67,7 +65,7 @@
 
 			if (!done) {
 				traitDescriptions = raceData.traits.reduce((descObject: TraitDescriptions, traitData) => {
-					descObject[traitData.index] = traitData.name; // Replace this with the actual description from the API
+					descObject[traitData.index] = traitData.name;
 					return descObject;
 				}, {});
 				featureDescriptions = { ...raceData };
@@ -82,24 +80,21 @@
 				delete featureDescriptions.name;
 				delete featureDescriptions.subraces;
 				delete featureDescriptions.language_options;
+				delete featureDescriptions.starting_proficiency_options;
 				delete Object.assign(featureDescriptions, { ['Age']: featureDescriptions['age'] })['age'];
 				delete Object.assign(featureDescriptions, { ['Speed']: featureDescriptions['speed'] })['speed'];
 				delete Object.assign(featureDescriptions, { ['Size']: featureDescriptions['size_description'] })[
 					'size_description'
 				];
 				delete Object.assign(featureDescriptions, { ['Alignment']: featureDescriptions['alignment'] })['alignment'];
-				if (featureDescriptions['starting_proficiencies']) {
+				if (featureDescriptions['starting_proficiencies']?.length > 0) {
 					console.log(featureDescriptions['starting_proficiencies']);
 					delete Object.assign(featureDescriptions, {
 						['Starting proficiencies']: featureDescriptions['starting_proficiencies']
 					})['starting_proficiencies'];
 					delete featureDescriptions.starting_proficiencies;
-				}
-				if (featureDescriptions['starting_proficiency_options']) {
-					delete Object.assign(featureDescriptions, {
-						['Starting proficiencies']: featureDescriptions['starting_proficiency_options'].desc
-					})['starting_proficiency_options'].desc;
-					delete featureDescriptions.starting_proficiency_options;
+				} else {
+					delete featureDescriptions.starting_proficiencies;
 				}
 				delete Object.assign(featureDescriptions, { ['Languages']: featureDescriptions['language_desc'] })[
 					'language_desc'
@@ -112,7 +107,6 @@
 		if (traitUrls && !done) {
 			Promise.all(traitUrls.map(fetchTraitDescription))
 				.then(() => {
-					// Now, you have all trait descriptions in the traitDescriptions object
 					done = true;
 				})
 				.catch((error) => {
@@ -121,7 +115,6 @@
 		}
 	}
 
-	// Function to fetch trait descriptions
 	async function fetchTraitDescription(url: string) {
 		url = 'https://www.dnd5eapi.co' + url;
 		try {

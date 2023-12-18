@@ -3,7 +3,6 @@ export interface TraitsData {
 		'Ability Score Increase': string;
 		Age: string;
 		Size: string;
-		// ... (list all other properties)
 	};
 }
 

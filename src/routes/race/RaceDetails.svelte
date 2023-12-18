@@ -1,5 +1,4 @@
 <script lang="ts">
-	import IntroText from './IntroText.svelte';
 	import { fly } from 'svelte/transition';
 	import Traits from './Traits.svelte';
 	import { onMount } from 'svelte';
@@ -25,7 +24,6 @@
 			const result = await addToIndexedDB(db, race, 'race');
 			console.log(result);
 			goto('/class');
-			// Redirect or perform other actions here
 		} catch (error) {
 			console.error(error);
 		}
@@ -33,7 +31,7 @@
 </script>
 
 <div class="visible" transition:fly={{ y: 200, duration: 200 }}>
-	<img class="descimg" src={currentRace[1]} alt="" />
+	<img class="descimg" src="/arts/{currentRace[1]}" alt="" />
 	<div class="header"><h1>{currentRace[0]}</h1></div>
 	<button
 		class="exit"
@@ -132,6 +130,7 @@
 	}
 	.detailintro {
 		color: #14182d;
+		min-height: 62vh;
 	}
 	.traits {
 		border: none;
